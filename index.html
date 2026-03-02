@@ -1912,7 +1912,6 @@ function showRequestForm() {
 
 function hideRequestForm() {
   document.getElementById('requestFormOverlay').classList.remove('open');
-  // Admin goes back to dashboard, non-admin stays on form
   if (sessionStorage.getItem('pm_authed') === '1') {
     navigate('dashboard');
   } else {
@@ -2082,31 +2081,37 @@ function rfReset() {
 
 
 // ==================== INIT ====================
+function applyRoute() {
+  const hash = window.location.hash;
+  const adminGate = document.getElementById('adminGate');
+  const appWrap   = document.getElementById('appWrap');
+  const formOverlay = document.getElementById('requestFormOverlay');
+
+  // Hide everything first
+  adminGate.style.display   = 'none';
+  appWrap.style.display     = 'none';
+  formOverlay.classList.remove('open');
+
+  if (hash === '#admin') {
+    sessionStorage.removeItem('pm_authed');
+    adminGate.style.display = 'flex';
+    setTimeout(() => document.getElementById('gatePassword').focus(), 100);
+  } else if (sessionStorage.getItem('pm_authed') === '1') {
+    appWrap.style.display = '';
+    renderDashboard();
+  } else {
+    // bare URL, #request, or anything else → show form
+    showRequestForm();
+  }
+}
+
 window.addEventListener('load', function() {
   updateGSStatus(db.gsConnected);
   updateRequestBadge();
-
-  const hash = window.location.hash;
-
-  if (hash === '#admin') {
-    // Show admin gate
-    document.getElementById('adminGate').style.display = 'flex';
-    document.getElementById('appWrap').style.display = 'none';
-    document.getElementById('requestFormOverlay').classList.remove('open');
-    setTimeout(() => document.getElementById('gatePassword').focus(), 100);
-  } else if (sessionStorage.getItem('pm_authed') === '1') {
-    // Already logged in this session
-    document.getElementById('adminGate').style.display = 'none';
-    document.getElementById('appWrap').style.display = '';
-    document.getElementById('requestFormOverlay').classList.remove('open');
-    renderDashboard();
-  } else {
-    // Everyone else (bare URL, #request, anything) → show form
-    document.getElementById('adminGate').style.display = 'none';
-    document.getElementById('appWrap').style.display = 'none';
-    showRequestForm();
-  }
+  applyRoute();
 });
+
+window.addEventListener('hashchange', applyRoute);
 
 
 </script>
