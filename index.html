@@ -1904,6 +1904,8 @@ let rfCalYear, rfCalMonth, rfSelectedDate = null;
 
 function showRequestForm() {
   document.getElementById('requestFormOverlay').classList.add('open');
+  document.getElementById('rfBackBtn').style.display =
+    sessionStorage.getItem('pm_authed') === '1' ? 'flex' : 'none';
   rfInitCal();
   rfClear();
   window.location.hash = 'request';
@@ -2112,6 +2114,7 @@ window.addEventListener('hashchange', routeByHash);
 <!-- REQUEST FORM OVERLAY (embedded — same localStorage as tracker) -->
 <div id="requestFormOverlay">
   <div class="rf-wrap">
+    <button class="rf-back-btn" id="rfBackBtn" onclick="hideRequestForm()" style="display:none;">← Back to Dashboard</button>
     <div id="rfFormWrap">
       <div class="rf-header">
         <div class="rf-header-body">
