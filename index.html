@@ -235,6 +235,134 @@
   .checkbox-item input { width: auto; }
 
 
+  /* ADMIN GATE */
+  #adminGate {
+    position: fixed; inset: 0; background: var(--bg);
+    z-index: 8000; display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .gate-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 40px 36px; width: 100%; max-width: 380px;
+    text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .gate-icon { font-size: 40px; margin-bottom: 14px; }
+  .gate-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .gate-sub { font-size: 13px; color: var(--text2); margin-bottom: 28px; line-height: 1.6; }
+  .gate-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 11px 14px; color: var(--text); font-size: 15px;
+    font-family: var(--sans); text-align: center; letter-spacing: 4px;
+    outline: none; transition: border-color 0.2s; margin-bottom: 10px;
+  }
+  .gate-input:focus { border-color: var(--accent); }
+  .gate-input.error { border-color: var(--danger); animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .gate-error { font-size: 12px; color: var(--danger); margin-bottom: 14px; min-height: 18px; }
+  .gate-btn {
+    width: 100%; padding: 11px; background: var(--accent); color: #0d1117;
+    border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: var(--sans); transition: background 0.2s; margin-bottom: 14px;
+  }
+  .gate-btn:hover { background: #00e6ba; }
+  .gate-divider { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .gate-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .gate-divider-text { font-size: 11px; color: var(--text3); }
+  .gate-form-link {
+    width: 100%; padding: 10px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px; font-size: 13px;
+    font-weight: 500; cursor: pointer; font-family: var(--sans);
+    color: var(--text2); transition: all 0.2s;
+  }
+  .gate-form-link:hover { border-color: var(--text2); color: var(--text); }
+  /* REQUEST FORM OVERLAY */
+  #requestFormOverlay {
+    display: none; position: fixed; inset: 0;
+    background: #f0f4f9; z-index: 500; overflow-y: auto; padding: 24px 16px 60px;
+  }
+  #requestFormOverlay.open { display: block; }
+  .rf-wrap { max-width: 640px; margin: 0 auto; }
+  .rf-header {
+    background: white; border-radius: 8px; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12); margin-bottom: 12px;
+    border-top: 10px solid #1a73e8;
+  }
+  .rf-header-body { padding: 24px 24px 20px; }
+  .rf-org { font-size: 12px; color: #5f6368; margin-bottom: 8px; font-weight: 500; }
+  .rf-title { font-size: 26px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+  .rf-desc { font-size: 14px; color: #5f6368; line-height: 1.6; }
+  .rf-req-note { margin-top: 12px; padding-top: 12px; border-top: 1px solid #dadce0; font-size: 12px; color: #80868b; }
+  .rf-card {
+    background: white; border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12); padding: 24px; margin-bottom: 12px;
+  }
+  .rf-section-title { font-size: 15px; font-weight: 600; color: #202124; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid #f0f4f9; }
+  .rf-field { margin-bottom: 22px; }
+  .rf-field:last-child { margin-bottom: 0; }
+  .rf-label { font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 6px; display: flex; gap: 4px; }
+  .rf-label .rf-req { color: #d93025; }
+  .rf-input, .rf-textarea {
+    width: 100%; border: none; border-bottom: 1px solid #dadce0;
+    padding: 8px 0; font-size: 14px; color: #202124; background: transparent;
+    font-family: var(--sans); outline: none; transition: border-color 0.2s;
+  }
+  .rf-input:focus, .rf-textarea:focus { border-bottom: 2px solid #1a73e8; }
+  .rf-input::placeholder, .rf-textarea::placeholder { color: #80868b; }
+  .rf-textarea { resize: none; min-height: 56px; }
+  .rf-error { font-size: 12px; color: #d93025; margin-top: 5px; display: none; }
+  .rf-error.show { display: block; }
+  .rf-radio-group { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
+  .rf-radio-item {
+    display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+    border-radius: 4px; cursor: pointer; font-size: 14px; color: #202124; transition: background 0.15s;
+  }
+  .rf-radio-item:hover { background: #f0f4f9; }
+  .rf-radio-item input { width: 16px; height: 16px; accent-color: #1a73e8; cursor: pointer; flex-shrink: 0; }
+  .rf-cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .rf-cal-nav-btn { background: none; border: none; cursor: pointer; padding: 6px 10px; border-radius: 50%; color: #5f6368; font-size: 18px; transition: background 0.15s; line-height: 1; }
+  .rf-cal-nav-btn:hover { background: #f0f4f9; }
+  .rf-cal-month { font-size: 14px; font-weight: 500; color: #202124; }
+  .rf-cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+  .rf-day-label { text-align: center; font-size: 11px; color: #80868b; font-weight: 500; padding: 3px 0; }
+  .rf-date-cell {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: 13px; cursor: pointer; color: #202124;
+    transition: all 0.12s; border: 2px solid transparent;
+  }
+  .rf-date-cell:hover:not(.rf-disabled):not(.rf-empty) { background: #e8f0fe; }
+  .rf-date-cell.rf-selected { background: #1a73e8; color: white; font-weight: 600; }
+  .rf-date-cell.rf-today { border-color: #1a73e8; color: #1a73e8; font-weight: 600; }
+  .rf-date-cell.rf-today.rf-selected { color: white; }
+  .rf-date-cell.rf-disabled { color: #dadce0; cursor: not-allowed; }
+  .rf-date-cell.rf-empty { cursor: default; }
+  .rf-selected-date { margin-top: 8px; font-size: 13px; color: #1a73e8; font-weight: 500; min-height: 20px; }
+  .rf-progress { height: 3px; background: #dadce0; border-radius: 2px; margin-bottom: 14px; overflow: hidden; }
+  .rf-progress-fill { height: 100%; background: #1a73e8; border-radius: 2px; transition: width 0.3s; width: 0%; }
+  .rf-submit {
+    background: #1a73e8; color: white; border: none; border-radius: 4px;
+    padding: 10px 28px; font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: var(--sans); transition: background 0.2s; letter-spacing: 0.2px;
+  }
+  .rf-submit:hover { background: #1557b0; }
+  .rf-submit:disabled { background: #dadce0; cursor: not-allowed; }
+  .rf-clear { background: none; border: none; color: #1a73e8; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--sans); padding: 10px 4px; }
+  .rf-clear:hover { text-decoration: underline; }
+  .rf-form-actions { display: flex; align-items: center; gap: 16px; }
+  .rf-back-btn {
+    display: flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--border);
+    border-radius: 6px; padding: 7px 14px; color: var(--text2); font-size: 13px;
+    cursor: pointer; font-family: var(--sans); margin-bottom: 16px; transition: all 0.15s;
+  }
+  .rf-back-btn:hover { border-color: var(--text2); color: var(--text); }
+  .rf-success { display: none; text-align: center; padding: 48px 24px; }
+  .rf-success.show { display: block; }
+  .rf-success-icon { font-size: 52px; margin-bottom: 14px; }
+  .rf-success-title { font-size: 22px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+  .rf-success-sub { font-size: 14px; color: #5f6368; line-height: 1.7; margin-bottom: 20px; }
+  .rf-success-summary { background: #f0f4f9; border-radius: 6px; padding: 14px 18px; text-align: left; font-size: 13px; color: #5f6368; line-height: 2; margin-bottom: 20px; }
+  .rf-success-summary strong { color: #202124; }
+  .rf-another { background: none; border: 1px solid #1a73e8; color: #1a73e8; border-radius: 4px; padding: 9px 22px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: all 0.2s; }
+  .rf-another:hover { background: #e8f0fe; }
+  .rf-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
   .filter-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
   .filter-row input, .filter-row select { max-width: 200px; }
 
@@ -271,7 +399,23 @@
 </head>
 <body>
 
-<div class="app">
+
+<!-- ADMIN PASSWORD GATE -->
+<div id="adminGate">
+  <div class="gate-card">
+    <div class="gate-icon">🔒</div>
+    <div class="gate-title">Admin Access</div>
+    <div class="gate-sub">Enter your admin password to access<br>the PM Tracker dashboard.</div>
+    <input type="password" class="gate-input" id="gatePassword"
+      placeholder="••••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter') gateLogin()"
+      oninput="document.getElementById('gateError').textContent=''">
+    <div class="gate-error" id="gateError"></div>
+    <button class="gate-btn" onclick="gateLogin()">Sign In</button>
+  </div>
+</div>
+
+<div class="app" id="appWrap" style="display:none;">
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -291,6 +435,7 @@
       <div class="nav-section">
         <div class="nav-section-label">Maintenance</div>
         <div class="nav-item" onclick="navigate('devices')"><span class="nav-icon">🖥️</span> Devices &amp; Logs</div>
+        <div class="nav-item" onclick="showRequestForm()"><span class="nav-icon">📝</span> Request Form</div>
         <div class="nav-item" onclick="navigate('requests')" id="navRequests"><span class="nav-icon">📬</span> Requests <span id="reqBadge" style="background:var(--danger);color:white;border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px;display:none;"></span></div>
         <div class="nav-item" onclick="navigate('bu')"><span class="nav-icon">🏢</span> Business Units</div>
         <div class="nav-item" onclick="navigate('schedule')"><span class="nav-icon">📅</span> Schedule</div>
@@ -767,10 +912,8 @@
           <select id="sType"><option>Routine PM</option><option>Deep Clean</option><option>Hardware Check</option><option>Software Update</option><option>Full PM</option></select>
         </div>
         <div class="form-group">
-          <label>Assigned To (Requestor)</label>
-          <select id="sAssigned">
-            <option value="">-- Select User --</option>
-          </select>
+          <label>Assigned To</label>
+          <input type="text" id="sAssigned" placeholder="Technician or requestor name">
         </div>
         <div class="form-group span2">
           <label>Notes</label>
@@ -912,15 +1055,7 @@ function openDeviceModal(id = null) {
 function openScheduleModal() {
   const sel = document.getElementById('sDevice');
   sel.innerHTML = '<option value="">-- Select Device --</option>' + db.devices.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-
-  const userSel = document.getElementById('sAssigned');
-  const activeUsers = db.users.filter(u => u.status === 'Active');
-  if (activeUsers.length) {
-    userSel.innerHTML = '<option value="">-- Select User --</option>' + activeUsers.map(u => `<option value="${u.id}">${u.name} — ${u.dept}</option>`).join('');
-  } else {
-    userSel.innerHTML = '<option value="">No registered users yet</option>';
-  }
-
+  document.getElementById('sAssigned').value = '';
   document.getElementById('sDate').value = '';
   document.getElementById('sNotes').value = '';
   openModal('scheduleModal');
@@ -993,14 +1128,10 @@ function saveSchedule() {
   const date = document.getElementById('sDate').value;
   if (!deviceId || !date) { toast('Please select a device and date.', 'error'); return; }
   const device = db.devices.find(d => d.id == deviceId);
-  const userId = document.getElementById('sAssigned').value;
-  const assignedUser = db.users.find(u => u.id == userId);
   const sched = {
     id: Date.now(), deviceId, deviceName: device ? device.name : '',
     date, type: document.getElementById('sType').value,
-    userId: userId || '',
-    assigned: assignedUser ? assignedUser.name : '',
-    assignedDept: assignedUser ? assignedUser.dept : '',
+    assigned: document.getElementById('sAssigned').value.trim(),
     notes: document.getElementById('sNotes').value,
     status: new Date(date) < new Date() ? 'Overdue' : 'Scheduled'
   };
@@ -1741,10 +1872,332 @@ function toast(msg, type = 'info') {
   setTimeout(() => el.remove(), 3500);
 }
 
+// ==================== ADMIN GATE ====================
+const ADMIN_PASSWORD = 'admin123'; // ← Change this to your own password
+
+function gateLogin() {
+  const input = document.getElementById('gatePassword');
+  const errEl = document.getElementById('gateError');
+  if (input.value === ADMIN_PASSWORD) {
+    document.getElementById('adminGate').style.display = 'none';
+    document.getElementById('appWrap').style.display = '';
+    sessionStorage.setItem('pm_authed', '1');
+    renderDashboard();
+  } else {
+    errEl.textContent = 'Incorrect password. Try again.';
+    input.classList.add('error');
+    input.value = '';
+    setTimeout(() => input.classList.remove('error'), 400);
+    input.focus();
+  }
+}
+
+function gateOpenForm() {
+  document.getElementById('adminGate').style.display = 'none';
+  showRequestForm();
+}
+
 // ==================== INIT ====================
 updateGSStatus(db.gsConnected);
 updateRequestBadge();
-renderDashboard();
+
+// #admin hash → show the admin password gate
+// anything else (including bare URL and #request) → show the form directly
+if (window.location.hash === '#admin') {
+  // Gate is already visible by default — do nothing
+} else if (sessionStorage.getItem('pm_authed') === '1') {
+  // Already authenticated this session
+  document.getElementById('adminGate').style.display = 'none';
+  document.getElementById('appWrap').style.display = '';
+  renderDashboard();
+} else {
+  // Everyone else: hide the gate and show the request form directly
+  document.getElementById('adminGate').style.display = 'none';
+  showRequestForm();
+}
+
+
+// ==================== EMBEDDED REQUEST FORM ====================
+const RF_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const RF_DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+let rfCalYear, rfCalMonth, rfSelectedDate = null;
+
+function showRequestForm() {
+  document.getElementById('requestFormOverlay').classList.add('open');
+  rfInitCal();
+  rfClear();
+  window.location.hash = 'request';
+}
+
+function hideRequestForm() {
+  document.getElementById('requestFormOverlay').classList.remove('open');
+  window.location.hash = '';
+  // If not admin, just show the form again (no gate, no dashboard)
+  if (sessionStorage.getItem('pm_authed') !== '1') {
+    showRequestForm();
+  }
+}
+
+function rfInitCal() {
+  const now = new Date();
+  rfCalYear  = now.getFullYear();
+  rfCalMonth = now.getMonth();
+  rfRenderCal();
+}
+
+function rfRenderCal() {
+  document.getElementById('rfCalMonth').textContent = RF_MONTHS[rfCalMonth] + ' ' + rfCalYear;
+  const grid  = document.getElementById('rfCalGrid');
+  const now   = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const first = new Date(rfCalYear, rfCalMonth, 1).getDay();
+  const days  = new Date(rfCalYear, rfCalMonth + 1, 0).getDate();
+
+  let html = RF_DAYS.map(d => `<div class="rf-day-label">${d}</div>`).join('');
+  for (let i = 0; i < first; i++) html += '<div class="rf-date-cell rf-empty"></div>';
+
+  for (let d = 1; d <= days; d++) {
+    const date   = new Date(rfCalYear, rfCalMonth, d);
+    const isPast = date < today;
+    const isTday = date.getTime() === today.getTime();
+    const isSel  = rfSelectedDate &&
+                   date.getFullYear() === rfSelectedDate.getFullYear() &&
+                   date.getMonth()    === rfSelectedDate.getMonth() &&
+                   date.getDate()     === rfSelectedDate.getDate();
+    const cls = ['rf-date-cell', isPast?'rf-disabled':'', isTday?'rf-today':'', isSel?'rf-selected':''].filter(Boolean).join(' ');
+    html += `<div class="${cls}" ${!isPast ? `onclick="rfSelectDate(${rfCalYear},${rfCalMonth},${d})"` : ''}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function rfPrevMonth() { rfCalMonth--; if (rfCalMonth < 0) { rfCalMonth = 11; rfCalYear--; } rfRenderCal(); }
+function rfNextMonth() { rfCalMonth++; if (rfCalMonth > 11) { rfCalMonth = 0; rfCalYear++; } rfRenderCal(); }
+
+function rfSelectDate(y, m, d) {
+  rfSelectedDate = new Date(y, m, d);
+  const label = rfSelectedDate.toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('rfSelectedDateDisplay').textContent = '📅 ' + label;
+  document.getElementById('rfErr-date').classList.remove('show');
+  rfRenderCal();
+  rfUpdateProgress();
+}
+
+function rfUpdateProgress() {
+  const fields = [
+    !!document.getElementById('rfName').value.trim(),
+    !!document.getElementById('rfEmail').value.trim(),
+    !!document.getElementById('rfDept').value.trim(),
+    !!rfSelectedDate,
+    !!document.querySelector('input[name="rfTime"]:checked')
+  ];
+  const pct = Math.round(fields.filter(Boolean).length / fields.length * 100);
+  document.getElementById('rfProgressFill').style.width = pct + '%';
+}
+
+function rfValidate() {
+  let valid = true;
+  const name  = document.getElementById('rfName').value.trim();
+  const email = document.getElementById('rfEmail').value.trim();
+  const dept  = document.getElementById('rfDept').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  rfShowErr('rfErr-name',  !name);
+  rfShowErr('rfErr-email', !emailOk);
+  rfShowErr('rfErr-dept',  !dept);
+  rfShowErr('rfErr-date',  !rfSelectedDate);
+  rfShowErr('rfErr-time',  !document.querySelector('input[name="rfTime"]:checked'));
+
+  if (!name || !emailOk || !dept || !rfSelectedDate || !document.querySelector('input[name="rfTime"]:checked')) valid = false;
+  return valid;
+}
+
+function rfShowErr(id, show) {
+  document.getElementById(id).classList.toggle('show', show);
+}
+
+function rfSubmit() {
+  if (!rfValidate()) {
+    document.querySelector('.rf-error.show')?.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const btn = document.getElementById('rfSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="rf-spinner"></span>Submitting...';
+
+  const name       = document.getElementById('rfName').value.trim();
+  const email      = document.getElementById('rfEmail').value.trim();
+  const dept       = document.getElementById('rfDept').value.trim();
+  const time       = document.querySelector('input[name="rfTime"]:checked').value;
+  const deviceType = document.querySelector('input[name="rfDeviceType"]:checked')?.value || '';
+  const notes      = document.getElementById('rfNotes').value.trim();
+  const dateStr    = rfSelectedDate.toISOString().split('T')[0];
+  const dateLabel  = rfSelectedDate.toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  const submission = {
+    id:          Date.now(),
+    name, email, dept, time, deviceType, notes,
+    date:        dateStr,
+    status:      'Scheduled',
+    type:        'Routine PM',
+    assigned:    '',
+    buName:      '',
+    submittedAt: new Date().toISOString()
+  };
+
+  // Save to db.schedules
+  db.schedules.push(submission);
+
+  // Save to pm_requests
+  const reqs = JSON.parse(localStorage.getItem('pm_requests') || '[]');
+  reqs.push(submission);
+  localStorage.setItem('pm_requests', JSON.stringify(reqs));
+  db.requests = reqs;
+
+  save();
+  updateRequestBadge();
+
+  // Sync to Sheets if connected
+  if (db.gsConnected) syncToSheets(true);
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = 'Submit';
+
+    // Show success
+    document.getElementById('rfFormWrap').style.display = 'none';
+    const succ = document.getElementById('rfSuccess');
+    succ.classList.add('show');
+    document.getElementById('rfSuccessSummary').innerHTML = `
+      <strong>Name:</strong> ${name}<br>
+      <strong>Email:</strong> ${email}<br>
+      <strong>Department:</strong> ${dept}<br>
+      <strong>Preferred Date:</strong> ${dateLabel}<br>
+      <strong>Preferred Time:</strong> ${time}<br>
+      ${deviceType ? `<strong>Device Type:</strong> ${deviceType}<br>` : ''}
+      ${notes ? `<strong>Notes:</strong> ${notes}` : ''}`;
+
+    document.getElementById('requestFormOverlay').scrollTo({ top: 0, behavior: 'smooth' });
+  }, 600);
+}
+
+function rfClear() {
+  ['rfName','rfEmail','rfDept','rfNotes'].forEach(id => document.getElementById(id).value = '');
+  document.querySelectorAll('input[name="rfTime"], input[name="rfDeviceType"]').forEach(r => r.checked = false);
+  rfSelectedDate = null;
+  document.getElementById('rfSelectedDateDisplay').textContent = 'No date selected';
+  document.querySelectorAll('.rf-error').forEach(e => e.classList.remove('show'));
+  document.getElementById('rfProgressFill').style.width = '0%';
+  rfRenderCal();
+}
+
+function rfReset() {
+  document.getElementById('rfFormWrap').style.display = 'block';
+  document.getElementById('rfSuccess').classList.remove('show');
+  rfClear();
+  document.getElementById('requestFormOverlay').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 </script>
+
+<!-- REQUEST FORM OVERLAY (embedded — same localStorage as tracker) -->
+<div id="requestFormOverlay">
+  <div class="rf-wrap">
+    <button class="rf-back-btn" onclick="hideRequestForm()">← Back</button>
+
+    <div id="rfFormWrap">
+      <div class="rf-header">
+        <div class="rf-header-body">
+          <div class="rf-org">IT Department · Preventive Maintenance System</div>
+          <div class="rf-title">PM Schedule Request</div>
+          <div class="rf-desc">Fill out this form to register your preferred schedule for Preventive Maintenance (PM) of your desktop or laptop.</div>
+          <div class="rf-req-note"><span style="color:#d93025">*</span> Indicates required question</div>
+        </div>
+      </div>
+
+      <div class="rf-progress"><div class="rf-progress-fill" id="rfProgressFill"></div></div>
+
+      <!-- Personal Info -->
+      <div class="rf-card">
+        <div class="rf-section-title">👤 Your Information</div>
+        <div class="rf-field">
+          <div class="rf-label">Full Name <span class="rf-req">*</span></div>
+          <input type="text" class="rf-input" id="rfName" placeholder="Your full name" oninput="rfUpdateProgress()">
+          <div class="rf-error" id="rfErr-name">⚠ This field is required.</div>
+        </div>
+        <div class="rf-field">
+          <div class="rf-label">Email Address <span class="rf-req">*</span></div>
+          <input type="email" class="rf-input" id="rfEmail" placeholder="your.email@company.com" oninput="rfUpdateProgress()">
+          <div class="rf-error" id="rfErr-email">⚠ Please enter a valid email.</div>
+        </div>
+        <div class="rf-field">
+          <div class="rf-label">Department <span class="rf-req">*</span></div>
+          <input type="text" class="rf-input" id="rfDept" placeholder="e.g. Finance, HR, Operations" oninput="rfUpdateProgress()">
+          <div class="rf-error" id="rfErr-dept">⚠ This field is required.</div>
+        </div>
+      </div>
+
+      <!-- Schedule Preference -->
+      <div class="rf-card">
+        <div class="rf-section-title">📅 Schedule Preference</div>
+        <div class="rf-field">
+          <div class="rf-label">Preferred Date <span class="rf-req">*</span></div>
+          <div class="rf-cal-nav">
+            <button class="rf-cal-nav-btn" onclick="rfPrevMonth()">‹</button>
+            <span class="rf-cal-month" id="rfCalMonth"></span>
+            <button class="rf-cal-nav-btn" onclick="rfNextMonth()">›</button>
+          </div>
+          <div class="rf-cal-grid" id="rfCalGrid"></div>
+          <div class="rf-selected-date" id="rfSelectedDateDisplay">No date selected</div>
+          <div class="rf-error" id="rfErr-date">⚠ Please select a preferred date.</div>
+        </div>
+        <div class="rf-field">
+          <div class="rf-label">Preferred Time <span class="rf-req">*</span></div>
+          <div class="rf-radio-group">
+            <label class="rf-radio-item"><input type="radio" name="rfTime" value="Morning (8:00 AM – 12:00 PM)" onchange="rfUpdateProgress()"> Morning (8:00 AM – 12:00 PM)</label>
+            <label class="rf-radio-item"><input type="radio" name="rfTime" value="Afternoon (1:00 PM – 5:00 PM)" onchange="rfUpdateProgress()"> Afternoon (1:00 PM – 5:00 PM)</label>
+            <label class="rf-radio-item"><input type="radio" name="rfTime" value="Any time" onchange="rfUpdateProgress()"> Any time — flexible</label>
+          </div>
+          <div class="rf-error" id="rfErr-time">⚠ Please select a preferred time.</div>
+        </div>
+      </div>
+
+      <!-- Device & Notes -->
+      <div class="rf-card">
+        <div class="rf-section-title">🖥️ Device & Notes</div>
+        <div class="rf-field">
+          <div class="rf-label">Device Type</div>
+          <div class="rf-radio-group">
+            <label class="rf-radio-item"><input type="radio" name="rfDeviceType" value="Desktop"> 🖥️ Desktop</label>
+            <label class="rf-radio-item"><input type="radio" name="rfDeviceType" value="Laptop"> 💻 Laptop</label>
+            <label class="rf-radio-item"><input type="radio" name="rfDeviceType" value="Both"> Both</label>
+          </div>
+        </div>
+        <div class="rf-field">
+          <div class="rf-label">Additional Notes / Concerns</div>
+          <textarea class="rf-textarea" id="rfNotes" placeholder="Any issues, concerns, or requests for the technician..."></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="rf-card">
+        <div class="rf-form-actions">
+          <button class="rf-submit" id="rfSubmitBtn" onclick="rfSubmit()">Submit</button>
+          <button class="rf-clear" onclick="rfClear()">Clear form</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="rf-card rf-success" id="rfSuccess">
+      <div class="rf-success-icon">✅</div>
+      <div class="rf-success-title">Request Submitted!</div>
+      <div class="rf-success-sub">Your PM schedule request has been received and added to the system.<br>The IT team will confirm your schedule shortly.</div>
+      <div class="rf-success-summary" id="rfSuccessSummary"></div>
+      <button class="rf-another" onclick="rfReset()">Submit another response</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
