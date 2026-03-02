@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM Schedule Request Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a73e8;
+    --primary-light: #e8f0fe;
+    --primary-dark: #1557b0;
+    --accent: #00897b;
+    --bg: #f0f4f9;
+    --white: #ffffff;
+    --border: #dadce0;
+    --text: #202124;
+    --text2: #5f6368;
+    --text3: #80868b;
+    --error: #d93025;
+    --success: #1e8e3e;
+    --header-h: #4caf50;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  .form-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* HEADER CARD */
+  .form-header {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    margin-bottom: 12px;
+    border-top: 10px solid var(--primary);
+  }
+  .form-header-body { padding: 24px 24px 20px; }
+  .form-org { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-weight: 500; letter-spacing: 0.3px; }
+  .form-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 28px; font-weight: 600; color: var(--text);
+    line-height: 1.2; margin-bottom: 10px;
+  }
+  .form-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+  .form-required-note {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text3);
+  }
+  .form-required-note span { color: var(--error); }
+
+  /* SECTION CARD */
+  .form-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    padding: 24px;
+    margin-bottom: 12px;
+  }
+
+  .form-section-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 16px; font-weight: 500; color: var(--text);
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--bg);
+  }
+
+  /* FORM FIELDS */
+  .field-group { margin-bottom: 24px; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  .field-label {
+    font-size: 14px; font-weight: 500; color: var(--text);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 4px;
+  }
+  .field-label .req { color: var(--error); font-size: 12px; }
+
+  .field-input, .field-select, .field-textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text);
+    background: transparent;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .field-input:focus, .field-select:focus, .field-textarea:focus {
+    border-bottom: 2px solid var(--primary);
+  }
+  .field-input::placeholder, .field-textarea::placeholder { color: var(--text3); }
+  .field-textarea { resize: none; min-height: 60px; }
+
+  .field-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235f6368' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding-right: 24px;
+    cursor: pointer;
+  }
+  .field-select option { color: var(--text); background: white; }
+
+  .field-error {
+    font-size: 12px; color: var(--error); margin-top: 6px;
+    display: none; align-items: center; gap: 4px;
+  }
+  .field-error.show { display: flex; }
+
+  /* RADIO / CHECKBOX GROUPS */
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+  .radio-item, .check-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: 4px;
+    cursor: pointer; transition: background 0.15s;
+    font-size: 14px; color: var(--text);
+  }
+  .radio-item:hover, .check-item:hover { background: var(--bg); }
+  .radio-item input[type=radio], .check-item input[type=checkbox] {
+    width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0;
+  }
+
+  /* DATE GRID */
+  .date-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .date-day-label {
+    text-align: center; font-size: 11px; color: var(--text3);
+    font-weight: 500; padding: 4px 0;
+  }
+  .date-cell {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: 13px; cursor: pointer;
+    color: var(--text); transition: all 0.15s; border: 2px solid transparent;
+    font-family: 'Roboto', sans-serif;
+  }
+  .date-cell:hover:not(.disabled):not(.empty) { background: var(--primary-light); }
+  .date-cell.selected { background: var(--primary); color: white; font-weight: 500; }
+  .date-cell.today { border-color: var(--primary); color: var(--primary); font-weight: 600; }
+  .date-cell.today.selected { color: white; }
+  .date-cell.disabled { color: var(--border); cursor: not-allowed; }
+  .date-cell.empty { cursor: default; }
+  .date-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .date-nav-btn {
+    background: none; border: none; cursor: pointer; padding: 6px 10px;
+    border-radius: 50%; color: var(--text2); font-size: 18px; transition: background 0.15s;
+    line-height: 1;
+  }
+  .date-nav-btn:hover { background: var(--bg); }
+  .date-month-label { font-size: 14px; font-weight: 500; color: var(--text); }
+  .selected-date-display {
+    margin-top: 10px; font-size: 13px; color: var(--primary); font-weight: 500;
+    min-height: 20px;
+  }
+
+  /* SUBMIT */
+  .form-actions {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    margin-top: 4px;
+  }
+  .submit-btn {
+    background: var(--primary); color: white;
+    border: none; border-radius: 4px;
+    padding: 10px 28px; font-size: 14px; font-weight: 500;
+    font-family: 'Google Sans', sans-serif;
+    cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.25px;
+  }
+  .submit-btn:hover { background: var(--primary-dark); box-shadow: 0 2px 6px rgba(26,115,232,0.3); }
+  .submit-btn:disabled { background: var(--border); cursor: not-allowed; box-shadow: none; }
+  .clear-btn {
+    background: none; border: none; color: var(--primary);
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: 'Google Sans', sans-serif; padding: 10px 4px;
+  }
+  .clear-btn:hover { text-decoration: underline; }
+
+  /* SUCCESS */
+  #successScreen {
+    display: none;
+    max-width: 640px; margin: 60px auto 0;
+    text-align: center;
+  }
+  .success-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    padding: 48px 32px;
+    border-top: 10px solid var(--success);
+  }
+  .success-icon { font-size: 56px; margin-bottom: 16px; }
+  .success-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 10px;
+  }
+  .success-sub { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 24px; }
+  .success-summary {
+    background: var(--bg); border-radius: 6px; padding: 16px 20px;
+    text-align: left; font-size: 13px; color: var(--text2);
+    line-height: 2; margin-bottom: 24px;
+  }
+  .success-summary strong { color: var(--text); }
+  .submit-another {
+    background: none; border: 1px solid var(--primary); color: var(--primary);
+    border-radius: 4px; padding: 10px 24px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'Google Sans', sans-serif; transition: all 0.2s;
+  }
+  .submit-another:hover { background: var(--primary-light); }
+
+  /* PROGRESS BAR */
+  .form-progress {
+    height: 3px; background: var(--border); border-radius: 2px;
+    margin-bottom: 16px; overflow: hidden;
+  }
+  .form-progress-fill {
+    height: 100%; background: var(--primary);
+    border-radius: 2px; transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  /* SPINNER */
+  .spinner {
+    display: inline-block; width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white; border-radius: 50%;
+    animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* FOOTER */
+  .form-footer {
+    text-align: center; font-size: 12px; color: var(--text3);
+    margin-top: 28px; padding-bottom: 12px;
+  }
+  .form-footer a { color: var(--primary); text-decoration: none; }
+
+  @media (max-width: 480px) {
+    body { padding: 12px 8px 40px; }
+    .form-card { padding: 18px 16px; }
+    .form-header-body { padding: 18px 16px 14px; }
+    .form-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MAIN FORM -->
+<div class="form-wrap" id="formWrap">
+
+  <!-- HEADER -->
+  <div class="form-header">
+    <div class="form-header-body">
+      <div class="form-org">IT Department · Preventive Maintenance System</div>
+      <div class="form-title">PM Schedule Request</div>
+      <div class="form-desc">
+        Fill out this form to register your preferred schedule for Preventive Maintenance (PM) of your desktop or laptop. Your request will be added to the PM schedule for your business unit's assigned month.
+      </div>
+      <div class="form-required-note"><span>*</span> Indicates required question</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="form-progress"><div class="form-progress-fill" id="progressFill"></div></div>
+
+  <!-- SECTION 1: Personal Info -->
+  <div class="form-card">
+    <div class="form-section-title">👤 Your Information</div>
+
+    <div class="field-group">
+      <div class="field-label">Full Name <span class="req">*</span></div>
+      <input type="text" class="field-input" id="fName" placeholder="Your full name" oninput="updateProgress()">
+      <div class="field-error" id="err-fName">⚠ This field is required.</div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Email Address <span class="req">*</span></div>
+      <input type="email" class="field-input" id="fEmail" placeholder="your.email@company.com" oninput="updateProgress()">
+      <div class="field-error" id="err-fEmail">⚠ Please enter a valid email.</div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Department <span class="req">*</span></div>
+      <input type="text" class="field-input" id="fDept" placeholder="e.g. Finance, HR, Operations" oninput="updateProgress()">
+      <div class="field-error" id="err-fDept">⚠ This field is required.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Schedule Preference -->
+  <div class="form-card">
+    <div class="form-section-title">📅 Schedule Preference</div>
+
+    <div class="field-group">
+      <div class="field-label">Preferred Date <span class="req">*</span></div>
+      <div class="date-nav">
+        <button class="date-nav-btn" onclick="prevMonth()">‹</button>
+        <span class="date-month-label" id="calMonthLabel"></span>
+        <button class="date-nav-btn" onclick="nextMonth()">›</button>
+      </div>
+      <div class="date-grid" id="calGrid"></div>
+      <div class="selected-date-display" id="selectedDateDisplay">No date selected</div>
+      <div class="field-error" id="err-fDate">⚠ Please select a preferred date.</div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Preferred Time <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-item">
+          <input type="radio" name="fTime" value="Morning (8:00 AM – 12:00 PM)" onchange="updateProgress()">
+          Morning (8:00 AM – 12:00 PM)
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="fTime" value="Afternoon (1:00 PM – 5:00 PM)" onchange="updateProgress()">
+          Afternoon (1:00 PM – 5:00 PM)
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="fTime" value="Any time" onchange="updateProgress()">
+          Any time — flexible
+        </label>
+      </div>
+      <div class="field-error" id="err-fTime">⚠ Please select a preferred time.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Additional Info -->
+  <div class="form-card">
+    <div class="form-section-title">🖥️ Device & Notes</div>
+
+    <div class="field-group">
+      <div class="field-label">Device Type</div>
+      <div class="radio-group">
+        <label class="radio-item">
+          <input type="radio" name="fDeviceType" value="Desktop">
+          🖥️ Desktop
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="fDeviceType" value="Laptop">
+          💻 Laptop
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="fDeviceType" value="Both">
+          Both
+        </label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Additional Notes / Concerns</div>
+      <textarea class="field-textarea" id="fNotes" placeholder="Any specific issues, concerns, or requests for the technician..."></textarea>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="form-card">
+    <div class="form-actions">
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit</button>
+      <button class="clear-btn" onclick="clearForm()">Clear form</button>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    Powered by <strong>PM Tracker System</strong> · IT Department<br>
+    <span style="margin-top:4px;display:block;">Submissions are added directly to the PM Schedule.</span>
+  </div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div id="successScreen">
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <div class="success-title">Request Submitted!</div>
+    <div class="success-sub">
+      Your PM schedule request has been received and added to the system.<br>
+      The IT team will confirm your schedule shortly.
+    </div>
+    <div class="success-summary" id="successSummary"></div>
+    <button class="submit-another" onclick="resetForm()">Submit another response</button>
+  </div>
+  <div class="form-footer" style="margin-top:20px;">
+    Powered by <strong>PM Tracker System</strong> · IT Department
+  </div>
+</div>
+
+<script>
+// ── Calendar ────────────────────────────────────────────────────────────────
+const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+
+let calYear, calMonth, selectedDate = null;
+
+function initCal() {
+  const now = new Date();
+  calYear  = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCal();
+}
+
+function renderCal() {
+  document.getElementById('calMonthLabel').textContent = `${MONTHS[calMonth]} ${calYear}`;
+  const grid  = document.getElementById('calGrid');
+  const now   = new Date();
+  today       = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const days  = new Date(calYear, calMonth + 1, 0).getDate();
+
+  let html = DAYS.map(d => `<div class="date-day-label">${d}</div>`).join('');
+
+  // Empty cells before first day
+  for (let i = 0; i < first; i++) html += `<div class="date-cell empty"></div>`;
+
+  for (let d = 1; d <= days; d++) {
+    const date    = new Date(calYear, calMonth, d);
+    const isPast  = date < today;
+    const isTday  = date.getTime() === today.getTime();
+    const isSel   = selectedDate &&
+                    date.getFullYear() === selectedDate.getFullYear() &&
+                    date.getMonth()    === selectedDate.getMonth() &&
+                    date.getDate()     === selectedDate.getDate();
+    const cls = [
+      'date-cell',
+      isPast  ? 'disabled' : '',
+      isTday  ? 'today'    : '',
+      isSel   ? 'selected' : ''
+    ].filter(Boolean).join(' ');
+
+    html += `<div class="${cls}" ${!isPast ? `onclick="selectDate(${calYear},${calMonth},${d})"` : ''}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function prevMonth() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCal();
+}
+function nextMonth() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCal();
+}
+function selectDate(y, m, d) {
+  selectedDate = new Date(y, m, d);
+  const label  = selectedDate.toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('selectedDateDisplay').textContent = '📅 ' + label;
+  document.getElementById('err-fDate').classList.remove('show');
+  renderCal();
+  updateProgress();
+}
+
+// ── Progress bar ────────────────────────────────────────────────────────────
+function updateProgress() {
+  const fields = [
+    !!document.getElementById('fName').value.trim(),
+    !!document.getElementById('fEmail').value.trim(),
+    !!document.getElementById('fDept').value.trim(),
+    !!selectedDate,
+    !!document.querySelector('input[name="fTime"]:checked')
+  ];
+  const pct = Math.round((fields.filter(Boolean).length / fields.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ── Validation ───────────────────────────────────────────────────────────────
+function validate() {
+  let valid = true;
+
+  const name = document.getElementById('fName').value.trim();
+  showErr('err-fName', !name);
+  if (!name) valid = false;
+
+  const email = document.getElementById('fEmail').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  showErr('err-fEmail', !emailOk);
+  if (!emailOk) valid = false;
+
+  const dept = document.getElementById('fDept').value.trim();
+  showErr('err-fDept', !dept);
+  if (!dept) valid = false;
+
+  showErr('err-fDate', !selectedDate);
+  if (!selectedDate) valid = false;
+
+  const time = document.querySelector('input[name="fTime"]:checked');
+  showErr('err-fTime', !time);
+  if (!time) valid = false;
+
+  return valid;
+}
+function showErr(id, show) {
+  document.getElementById(id).classList.toggle('show', show);
+}
+
+// ── Submit ───────────────────────────────────────────────────────────────────
+function submitForm() {
+  if (!validate()) {
+    // Scroll to first error
+    document.querySelector('.field-error.show')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+  const name       = document.getElementById('fName').value.trim();
+  const email      = document.getElementById('fEmail').value.trim();
+  const dept       = document.getElementById('fDept').value.trim();
+  const time       = document.querySelector('input[name="fTime"]:checked').value;
+  const deviceType = document.querySelector('input[name="fDeviceType"]:checked')?.value || '';
+  const notes      = document.getElementById('fNotes').value.trim();
+  const dateStr    = selectedDate.toISOString().split('T')[0];
+  const dateLabel  = selectedDate.toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // ── Save submission to shared localStorage key that pm-tracker reads ──────
+  // Both files must be served from the same origin for this to work.
+  // When hosted on Netlify in the same domain, this is seamless.
+  const submission = {
+    id:          Date.now(),
+    name, email, dept,
+    date:        dateStr,
+    time,
+    deviceType,
+    notes,
+    status:      'Scheduled',
+    type:        'Routine PM',
+    assigned:    '',
+    buName:      '',
+    submittedAt: new Date().toISOString()
+  };
+
+  try {
+    // Read existing schedules from pm-tracker's localStorage key
+    const existing = JSON.parse(localStorage.getItem('pm_schedules') || '[]');
+    existing.push(submission);
+    localStorage.setItem('pm_schedules', JSON.stringify(existing));
+
+    // Also store in a pending requests key so admin can review
+    const requests = JSON.parse(localStorage.getItem('pm_requests') || '[]');
+    requests.push(submission);
+    localStorage.setItem('pm_requests', JSON.stringify(requests));
+
+    // Also register/update user in pm_users
+    const users = JSON.parse(localStorage.getItem('pm_users') || '[]');
+    const exists = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!exists) {
+      users.push({ id: Date.now() + 1, name, email, dept, status: 'Active', registered: dateStr });
+      localStorage.setItem('pm_users', JSON.stringify(users));
+    }
+  } catch(e) {
+    console.warn('localStorage write:', e);
+  }
+
+  // ── Also POST to Google Sheets if configured ──────────────────────────────
+  const gsURL = localStorage.getItem('pm_gsURL');
+  const syncPromise = gsURL
+    ? fetch(gsURL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'clear_and_write',
+          sheet: 'PM_Requests',
+          headers: ['ID','Name','Email','Department','Preferred Date','Preferred Time','Device Type','Notes','Status','Submitted At'],
+          rows: (JSON.parse(localStorage.getItem('pm_requests') || '[]'))
+                .map(r => [r.id, r.name, r.email, r.dept, r.date, r.time, r.deviceType||'', r.notes||'', r.status, r.submittedAt])
+        })
+      }).catch(() => {})
+    : Promise.resolve();
+
+  syncPromise.finally(() => {
+    setTimeout(() => {
+      // Show success
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+      document.getElementById('successSummary').innerHTML = `
+        <strong>Name:</strong> ${name}<br>
+        <strong>Email:</strong> ${email}<br>
+        <strong>Department:</strong> ${dept}<br>
+        <strong>Preferred Date:</strong> ${dateLabel}<br>
+        <strong>Preferred Time:</strong> ${time}<br>
+        ${deviceType ? `<strong>Device Type:</strong> ${deviceType}<br>` : ''}
+        ${notes ? `<strong>Notes:</strong> ${notes}` : ''}
+      `;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 800);
+  });
+}
+
+// ── Clear / Reset ────────────────────────────────────────────────────────────
+function clearForm() {
+  if (!confirm('Clear all answers?')) return;
+  document.getElementById('fName').value = '';
+  document.getElementById('fEmail').value = '';
+  document.getElementById('fDept').value = '';
+  document.getElementById('fNotes').value = '';
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  selectedDate = null;
+  document.getElementById('selectedDateDisplay').textContent = 'No date selected';
+  document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
+  document.getElementById('progressFill').style.width = '0%';
+  renderCal();
+}
+
+function resetForm() {
+  document.getElementById('successScreen').style.display = 'none';
+  document.getElementById('formWrap').style.display = 'block';
+  clearForm();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+initCal();
+</script>
+</body>
+</html>
