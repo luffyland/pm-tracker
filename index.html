@@ -1908,14 +1908,14 @@ function showRequestForm() {
     sessionStorage.getItem('pm_authed') === '1' ? 'flex' : 'none';
   rfInitCal();
   rfClear();
-  window.location.hash = 'request';
 }
 
 function hideRequestForm() {
   document.getElementById('requestFormOverlay').classList.remove('open');
-  window.location.hash = '';
-  // If not admin, just show the form again (no gate, no dashboard)
-  if (sessionStorage.getItem('pm_authed') !== '1') {
+  // Admin goes back to dashboard, non-admin stays on form
+  if (sessionStorage.getItem('pm_authed') === '1') {
+    navigate('dashboard');
+  } else {
     showRequestForm();
   }
 }
@@ -2082,49 +2082,31 @@ function rfReset() {
 
 
 // ==================== INIT ====================
-function routeByHash() {
+window.addEventListener('load', function() {
+  updateGSStatus(db.gsConnected);
+  updateRequestBadge();
+
   const hash = window.location.hash;
 
-  // Ignore hash changes caused internally by showRequestForm / hideRequestForm
-  if (hash === '#request') {
-    // Already showing form — do nothing
-    return;
-  }
-
   if (hash === '#admin') {
-    sessionStorage.removeItem('pm_authed');
+    // Show admin gate
     document.getElementById('adminGate').style.display = 'flex';
     document.getElementById('appWrap').style.display = 'none';
     document.getElementById('requestFormOverlay').classList.remove('open');
     setTimeout(() => document.getElementById('gatePassword').focus(), 100);
   } else if (sessionStorage.getItem('pm_authed') === '1') {
+    // Already logged in this session
     document.getElementById('adminGate').style.display = 'none';
     document.getElementById('appWrap').style.display = '';
+    document.getElementById('requestFormOverlay').classList.remove('open');
     renderDashboard();
   } else {
-    // bare URL or anything else → show the request form
+    // Everyone else (bare URL, #request, anything) → show form
     document.getElementById('adminGate').style.display = 'none';
-    showRequestForm();
-  }
-}
-
-window.addEventListener('load', function() {
-  updateGSStatus(db.gsConnected);
-  updateRequestBadge();
-  // On initial load, treat #request same as no hash — show the form
-  if (window.location.hash === '#admin') {
-    routeByHash();
-  } else if (sessionStorage.getItem('pm_authed') === '1') {
-    document.getElementById('adminGate').style.display = 'none';
-    document.getElementById('appWrap').style.display = '';
-    renderDashboard();
-  } else {
-    document.getElementById('adminGate').style.display = 'none';
+    document.getElementById('appWrap').style.display = 'none';
     showRequestForm();
   }
 });
-
-window.addEventListener('hashchange', routeByHash);
 
 
 </script>
