@@ -1977,7 +1977,7 @@ function switchDevicesTab(tab) {
     if (!logBtns) {
       logBtns = document.createElement('span');
       logBtns.id = 'logActionBtns';
-      logBtns.innerHTML = '<button class="btn btn-primary" onclick="openLogModal()">+ New PM Log</button> <button class="btn btn-secondary" onclick="exportCSV(\'logs\')">↓ Export CSV</button>';
+      logBtns.innerHTML = '<button class="btn btn-secondary" onclick="exportCSV(\'logs\')">↓ Export CSV</button>';
       document.getElementById('devicesActions').appendChild(logBtns);
     }
     logBtns.style.display = '';
