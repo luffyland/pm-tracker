@@ -2116,8 +2116,8 @@ Brand: $($cs.Manufacturer)
 Model: $($cs.Model)
 Serial: $($bios.SerialNumber)
 CPU: $($cpu.Name.Trim())
-RAM: ${ram}GB
-Storage: ${diskGB}GB $mediaType
+RAM: \${ram}GB
+Storage: \${diskGB}GB $mediaType
 OS: $($os.Caption) $($os.OSArchitecture)
 User: $($cs.UserName -replace '.*\\', '')
 "@
@@ -2185,7 +2185,7 @@ async function pasteSpecs() {
 
   // Count filled fields
   const filled = ['Name','Type','Brand','Model','Serial','CPU','RAM','Storage','OS','User'].filter(k => data[k]).length;
-  toast(\`✅ \${filled} fields filled automatically! Review and add Location.\`, 'success');
+  toast('✅ ' + filled + ' fields filled automatically! Review and add Location.', 'success');
 }
 
 // ==================== GOOGLE SHEETS ====================
