@@ -748,6 +748,19 @@
 
       <!-- DEVICE TAB -->
       <div id="modalTabDevice">
+
+        <!-- PASTE SPECS BANNER -->
+        <div style="background:rgba(0,212,170,0.07);border:1px solid rgba(0,212,170,0.2);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:2px;">⚡ Auto-fill from PC</div>
+            <div style="font-size:12px;color:var(--text2);">Run the PowerShell script on the target PC, then click Paste Specs.</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;">
+            <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px;" onclick="showPSScript()">📋 Get Script</button>
+            <button class="btn btn-primary" style="font-size:12px;padding:6px 12px;" onclick="pasteSpecs()">⚡ Paste Specs</button>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Device Name *</label>
@@ -966,6 +979,29 @@
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('scheduleModal')">Cancel</button>
       <button class="btn btn-primary" onclick="saveSchedule()">Save Schedule</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL: POWERSHELL SCRIPT -->
+<div class="modal-overlay" id="psModal">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <div class="modal-title">📋 PowerShell Script</div>
+      <button class="modal-close" onclick="closeModal('psModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7;">
+        <strong style="color:var(--text);">Run this on the target PC:</strong><br>
+        Press <kbd style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;">Win + R</kbd>, type <code style="color:var(--accent);">powershell</code>, press Enter, then paste and run this script. It will copy the specs to your clipboard automatically.
+      </div>
+      <div class="code-block" id="psScriptCode" style="font-size:11px;max-height:200px;overflow-y:auto;white-space:pre;"></div>
+      <button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="copyPSScript()">📋 Copy Script to Clipboard</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('psModal')">Close</button>
+      <button class="btn btn-primary" onclick="closeModal('psModal');pasteSpecs()">I ran it — Paste Specs now ⚡</button>
     </div>
   </div>
 </div>
@@ -2048,6 +2084,108 @@ function openHistoryDrawer(deviceId) {
 
 function closeHistoryDrawer() {
   document.getElementById('deviceHistoryDrawer').style.display = 'none';
+}
+
+
+// ==================== PASTE SPECS ====================
+const psScript = `$ErrorActionPreference = 'SilentlyContinue'
+
+# Collect hardware info
+$cs   = Get-CimInstance Win32_ComputerSystem
+$os   = Get-CimInstance Win32_OperatingSystem
+$cpu  = Get-CimInstance Win32_Processor | Select-Object -First 1
+$ram  = [math]::Round($cs.TotalPhysicalMemory / 1GB)
+$bios = Get-CimInstance Win32_BIOS
+$disk = Get-CimInstance Win32_DiskDrive | Where-Object { $_.MediaType -like '*Fixed*' } | Select-Object -First 1
+$diskGB = [math]::Round($disk.Size / 1GB)
+
+# Detect if laptop or desktop
+$chassis = (Get-CimInstance Win32_SystemEnclosure).ChassisTypes
+$isLaptop = $chassis | Where-Object { $_ -in @(9,10,14) }
+$type = if ($isLaptop) { 'Laptop' } else { 'Desktop' }
+
+# Detect SSD or HDD
+$mediaType = (Get-PhysicalDisk | Select-Object -First 1).MediaType
+if (-not $mediaType) { $mediaType = 'HDD' }
+
+$output = @"
+PM_SPECS_V1
+Name: $($cs.Name)
+Type: $type
+Brand: $($cs.Manufacturer)
+Model: $($cs.Model)
+Serial: $($bios.SerialNumber)
+CPU: $($cpu.Name.Trim())
+RAM: ${ram}GB
+Storage: ${diskGB}GB $mediaType
+OS: $($os.Caption) $($os.OSArchitecture)
+User: $($cs.UserName -replace '.*\\', '')
+"@
+
+$output | Set-Clipboard
+Write-Host "Done! Specs copied to clipboard." -ForegroundColor Green
+Write-Host "Go back to PM Tracker and click Paste Specs." -ForegroundColor Cyan
+Start-Sleep -Seconds 2`;
+
+function showPSScript() {
+  document.getElementById('psScriptCode').textContent = psScript;
+  openModal('psModal');
+}
+
+function copyPSScript() {
+  navigator.clipboard.writeText(psScript)
+    .then(() => toast('Script copied! Run it in PowerShell on the target PC.', 'success'))
+    .catch(() => {
+      const el = document.createElement('textarea');
+      el.value = psScript;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      toast('Script copied!', 'success');
+    });
+}
+
+async function pasteSpecs() {
+  let text = '';
+  try {
+    text = await navigator.clipboard.readText();
+  } catch (e) {
+    toast('Clipboard access denied. Please allow clipboard access and try again.', 'error');
+    return;
+  }
+
+  if (!text.startsWith('PM_SPECS_V1')) {
+    toast('No specs found in clipboard. Run the PowerShell script on the target PC first.', 'error');
+    return;
+  }
+
+  // Parse key: value lines
+  const data = {};
+  text.split('\n').forEach(line => {
+    const idx = line.indexOf(':');
+    if (idx > -1) {
+      const key = line.substring(0, idx).trim();
+      const val = line.substring(idx + 1).trim();
+      if (key && val) data[key] = val;
+    }
+  });
+
+  // Fill in fields
+  if (data.Name)    document.getElementById('dName').value    = data.Name;
+  if (data.Type)    document.getElementById('dType').value    = data.Type;
+  if (data.Brand)   document.getElementById('dBrand').value   = data.Brand;
+  if (data.Model)   document.getElementById('dModel').value   = data.Model;
+  if (data.Serial)  document.getElementById('dSerial').value  = data.Serial;
+  if (data.CPU)     document.getElementById('dCPU').value     = data.CPU;
+  if (data.RAM)     document.getElementById('dRAM').value     = data.RAM;
+  if (data.Storage) document.getElementById('dStorage').value = data.Storage;
+  if (data.OS)      document.getElementById('dOS').value      = data.OS;
+  if (data.User)    document.getElementById('dUser').value    = data.User;
+
+  // Count filled fields
+  const filled = ['Name','Type','Brand','Model','Serial','CPU','RAM','Storage','OS','User'].filter(k => data[k]).length;
+  toast(\`✅ \${filled} fields filled automatically! Review and add Location.\`, 'success');
 }
 
 // ==================== GOOGLE SHEETS ====================
